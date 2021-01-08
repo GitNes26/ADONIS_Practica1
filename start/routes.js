@@ -19,3 +19,8 @@ const Route = use('Route')
 Route.get('/', () => {
   return { greeting: 'Hello world in JSON' }
 })
+
+Route.get('index/:id?', 'MovieController.index')
+Route.post('movies', 'MovieController.create')
+Route.put('movies/:id', 'MovieController.update')
+Route.delete('movies/:id', 'MovieController.delete')
