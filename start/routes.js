@@ -20,7 +20,7 @@ Route.get('/', () => {
   return { greeting: 'Hello world in JSON' }
 })
 
-Route.get('index/:id?', 'MovieController.index')
+Route.get('index/:edad/:id?', 'MovieController.index').middleware(['edad'])
 Route.post('movies', 'MovieController.create')
 Route.put('movies/:id', 'MovieController.update')
 Route.delete('movies/:id', 'MovieController.delete')

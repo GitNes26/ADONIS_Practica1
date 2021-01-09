@@ -8,11 +8,12 @@ class MovieController {
         const {id} = params
         
         if (id){
-            var movie = await Movie.find(id)
+            const movie = await Movie.find(id)
+            return response.json({Pelicula:movie})
         }else {
-            var movie = await Movie.all()  
+            const movies = await Movie.all()
+            return response.json({Cartelera:movies})
         }
-       return response.json(movie)
     }
 
     async create ({request, response}){
@@ -28,7 +29,7 @@ class MovieController {
 
         try {
             await movie.save()
-            return response.json(movie)
+            return response.json({Notificacion:'Pelicula Registrada', DatosPelicula:movie})
         } catch (error) {
             return response.json(Error)
         }      
@@ -48,7 +49,7 @@ class MovieController {
 
         try {
             await movie.save()
-            return response.json(movie)
+            return response.json({Notificacion:'Datos de Pelicula Actualizados', DatosPelicula:movie})
         } catch (error) {
             return response.json(Error)
         }
@@ -62,7 +63,7 @@ class MovieController {
         const movie = await Movie.find(id)
         await movie.delete()
 
-        return response.json({Notificación:"Pelicula eliminada", PeliculasRegistradas:movies})
+        return response.json({Notificacion:'La pelicula - ' + movie.title + ' - fue eliminada', PeliculasRegistradas:movies})
     }
 }
 
