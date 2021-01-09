@@ -4,6 +4,7 @@
 const Model = use('Model')
 
 class Movie extends Model {
+    static get table (){ return 'movies' }
 }
 
 module.exports = Movie
