@@ -2,7 +2,8 @@
 
 const DB = use('Database')
 const Movie = use('App/Models/Movie')
-const {validate} = require('indicative')
+// const { validate } = require('indicative')
+const {validate} = use('Validator')
 
 class MovieController {
     
@@ -20,14 +21,21 @@ class MovieController {
 
     async create ({request, response}){
         const rules = {
-            title    : 'required|alpha|unique:movie',
-            gendeer  : 'required|aplha',
+            title    : 'required|unique:movies',
+            gender   : 'required',
             category : 'required',
-            synopsis : 'required|aplha|min:10',
-            year     : 'required',
-            price    : 'required|min:50'
+            synopsis : 'required|min:10',
+            year     : 'required|number',
+            price    : 'required|number'
         }
         const data = request.all()
+        const validation = await validate(data, rules)
+        
+        if (validation.fails()) {
+            return response.json({
+                Notificacion:'Informacion invalida',
+                Error:validation.messages()})
+        }
 
         const movie = new Movie()
         movie.title    = data.title
@@ -36,12 +44,6 @@ class MovieController {
         movie.synopsis = data.synopsis
         movie.year     = data.year
         movie.price    = data.price
-
-        validate(movie, rules)
-
-        if (validate.fails()) {
-            return validate.message()
-        }
 
         try {
             await movie.save()

@@ -21,6 +21,6 @@ Route.get('/', () => {
 })
 
 Route.get('index/:edad/:id?', 'MovieController.index').middleware(['edad'])
-Route.post('movies', 'MovieController.create').validator(['Movie'])
+Route.post('movies', 'MovieController.create')
 Route.put('movies/:id', 'MovieController.update')
 Route.delete('movies/:id', 'MovieController.delete')
