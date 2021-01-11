@@ -2,8 +2,10 @@
 
 const DB = use('Database')
 const Movie = use('App/Models/Movie')
+const {validate} = require('indicative')
 
 class MovieController {
+    
     async index ({params, response}){
         const {id} = params
         
@@ -17,6 +19,14 @@ class MovieController {
     }
 
     async create ({request, response}){
+        const rules = {
+            title    : 'required|alpha|unique:movie',
+            gendeer  : 'required|aplha',
+            category : 'required',
+            synopsis : 'required|aplha|min:10',
+            year     : 'required',
+            price    : 'required|min:50'
+        }
         const data = request.all()
 
         const movie = new Movie()
@@ -26,6 +36,12 @@ class MovieController {
         movie.synopsis = data.synopsis
         movie.year     = data.year
         movie.price    = data.price
+
+        validate(movie, rules)
+
+        if (validate.fails()) {
+            return validate.message()
+        }
 
         try {
             await movie.save()
